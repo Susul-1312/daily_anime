@@ -17,6 +17,12 @@ app.use(express.static('public'));
 
 app.use("/add", async (req, res) => {
 	const webhook = req.body.webhook;
+
+	if (hooks.includes(webhook)) {
+		res.end("Webhook already added");
+		return;
+	}
+
 	const code = await validate(webhook);
 	console.log(code);
 	if (code == 200) {
