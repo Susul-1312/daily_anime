@@ -5,7 +5,7 @@ const request = require('request');
 const fs = require('fs');
 const CronJob = require('cron').CronJob;
 
-var distribution = new CronJob('0 * * * * *', function() {
+var distribution = new CronJob('0 0 * * * *', function() {
 	const options = {
 		url: "https://nekos.life/api/v2/img/neko",
 		method: 'GET'
@@ -15,12 +15,12 @@ var distribution = new CronJob('0 * * * * *', function() {
 		if (err) {
 			console.log(JSON.stringify(err, null, 4));
 		}
-		
+
 		body = JSON.parse(body);
 
 		console.log("Starting distribution of %s", body.url);
 		distribute(body.url);
-		
+
 	});
 
 });
@@ -64,10 +64,6 @@ app.use("/add", async (req, res) => {
 	} else {
 		res.end("Something is wrong with the Webhook URL");
 	}
-});
-
-app.use("/read", (req, res) => {
-	res.end(JSON.stringify(hooks));
 });
 
 function distribute(img_url) {
